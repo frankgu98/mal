@@ -1,11 +1,14 @@
+import reader
+import printer
+
 def READ(s):
-    return s
+    return reader.read_str(s)
 
-def EVAL(s):
-    return s
+def EVAL(token):
+    return token
 
-def PRINT(s):
-    print(s)
+def PRINT(token):
+    print(printer.pr_str(token))
 
 def rep(s):
     return PRINT(EVAL(READ(s)))
@@ -17,4 +20,3 @@ while True:
     except EOFError:
         print()
         break
-
