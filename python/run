@@ -1,2 +1,3 @@
 #!/bin/bash
+# couldn't just use `python` after exec
 exec ${python_MODE:-python} $(dirname $0)/${STEP:-stepA_mal}.py "${@}"
