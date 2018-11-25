@@ -12,8 +12,19 @@ class Reader():
     def peek(self):
         return self.tokens[self.position]
 
-class MalToken():
+
+class MalAST():
     def __init__(self, type_, value):
+        """
+        ASTs
+            atoms
+                symbol, int
+            lists
+                list
+
+        token
+            any string in the program, no "meaning" yet
+        """
         self.type = type_
         self.value = value
 
@@ -38,32 +49,32 @@ def can_be_type(cast_function, s):
 
 
 def read_form(reader):  
-    token = read_atom(reader)
-    if token.type == "symbol" and token.value == "(":
-        tokens = MalToken("list", [])
-        tokens.value.extend(read_list(reader).value)
-        return tokens
+    mal_atom = read_atom(reader)
+    if mal_atom.type == "symbol" and mal_atom.value == "(":
+        mal_list = MalAST("list", [])
+        mal_list.value.extend(read_list(reader).value)
+        return mal_list
     else:
-        return token
+        return mal_atom
     
 
 def read_list(reader):
     # TODO: try except 
-    tokens = MalToken("list", [])
+    mal_list = MalAST("list", [])
     while True:
-        token = read_form(reader)
-        if token.type == "symbol" and token.value == ")":
-            return tokens
+        mal_ast = read_form(reader)
+        if mal_ast.type == "symbol" and mal_ast.value == ")":
+            return mal_list
         else:
-            tokens.value.append(token)
+            mal_list.value.append(mal_ast)
 
 # base case of the mutually recursive read_form() and read_list()
 def read_atom(reader):
-    token_value = reader.next()
-    if can_be_type(int, token_value):
-        return MalToken("int", int(token_value))
+    token = reader.next()
+    if can_be_type(int, token):
+        return MalAST("int", int(token))
     else: # not convertible to int, assume it's a symbol
-        return MalToken("symbol", token_value)
+        return MalAST("symbol", token)
 
 
 if __name__ == "__main__":
@@ -73,5 +84,5 @@ if __name__ == "__main__":
 
     tokens = tokenizer("((123 456) 5)")
     reader = Reader(tokens)
-    form = read_form(reader)
-    print(form)
+    ast = read_form(reader)
+    print(ast)

@@ -1,7 +1,7 @@
-def pr_str(ast):
-    if ast.type == "symbol":
-        return ast.value
-    elif ast.type == "int":
-        return str(ast.value)
-    elif ast.type == "list":
-        return f'({ " ".join(map(pr_str, ast.value)) })'
+def pr_str(mal_ast):
+    if mal_ast.type == "symbol":
+        return mal_ast.value
+    elif mal_ast.type == "int":
+        return str(mal_ast.value)
+    elif mal_ast.type == "list":
+        return f'({ " ".join(map(pr_str, mal_ast.value)) })'
