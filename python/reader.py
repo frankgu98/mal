@@ -13,10 +13,10 @@ class Reader():
         return self.tokens[self.position]
 
 
-class MalAST():
+class MalSExpression():
     def __init__(self, type_, value):
         """
-        ASTs
+        SExpressions/ASTs
             atoms
                 symbol, int
             lists
@@ -51,7 +51,7 @@ def can_be_type(cast_function, s):
 def read_form(reader):  
     mal_atom = read_atom(reader)
     if mal_atom.type == "symbol" and mal_atom.value == "(":
-        mal_list = MalAST("list", [])
+        mal_list = MalSExpression("list", [])
         mal_list.value.extend(read_list(reader).value)
         return mal_list
     else:
@@ -60,21 +60,21 @@ def read_form(reader):
 
 def read_list(reader):
     # TODO: try except 
-    mal_list = MalAST("list", [])
+    mal_list = MalSExpression("list", [])
     while True:
-        mal_ast = read_form(reader)
-        if mal_ast.type == "symbol" and mal_ast.value == ")":
+        mal_s_exp = read_form(reader)
+        if mal_s_exp.type == "symbol" and mal_s_exp.value == ")":
             return mal_list
         else:
-            mal_list.value.append(mal_ast)
+            mal_list.value.append(mal_s_exp)
 
 # base case of the mutually recursive read_form() and read_list()
 def read_atom(reader):
     token = reader.next()
     if can_be_type(int, token):
-        return MalAST("int", int(token))
+        return MalSExpression("int", int(token))
     else: # not convertible to int, assume it's a symbol
-        return MalAST("symbol", token)
+        return MalSExpression("symbol", token)
 
 
 if __name__ == "__main__":
@@ -84,5 +84,5 @@ if __name__ == "__main__":
 
     tokens = tokenizer("((123 456) 5)")
     reader = Reader(tokens)
-    ast = read_form(reader)
-    print(ast)
+    mal_s_exp = read_form(reader)
+    print(mal_s_exp)

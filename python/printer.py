@@ -1,7 +1,5 @@
-def pr_str(mal_ast):
-    if mal_ast.type == "symbol":
-        return mal_ast.value
-    elif mal_ast.type == "int":
-        return str(mal_ast.value)
-    elif mal_ast.type == "list":
-        return f'({ " ".join(map(pr_str, mal_ast.value)) })'
+def pr_str(mal_s_exp):
+    if mal_s_exp.type == "symbol" or mal_s_exp.type == "int":
+        return str(mal_s_exp.value)
+    elif mal_s_exp.type == "list":
+        return f'({ " ".join(map(pr_str, mal_s_exp.value)) })'
