@@ -1,5 +1,7 @@
-def pr_str(token):
-    if token.type == "symbol" or token.type == "int":
-        return token.value
-    elif token.type == "list":
-        return "(" + " ".join(map(pr_str, token.value)) + ")"
+def pr_str(ast):
+    if ast.type == "symbol":
+        return ast.value
+    elif ast.type == "int":
+        return str(ast.value)
+    elif ast.type == "list":
+        return f'({ " ".join(map(pr_str, ast.value)) })'

@@ -17,9 +17,6 @@ class MalToken():
         self.type = type_
         self.value = value
 
-    def typed_string(self):
-        return "{" + str(self.type) + " " + str(self.value) + "}"
-
 
 def read_str(s):
     reader = Reader(tokenizer(s))
@@ -64,7 +61,7 @@ def read_list(reader):
 def read_atom(reader):
     token_value = reader.next()
     if can_be_type(int, token_value):
-        return MalToken("int", token_value)
+        return MalToken("int", int(token_value))
     else: # not convertible to int, assume it's a symbol
         return MalToken("symbol", token_value)
 
